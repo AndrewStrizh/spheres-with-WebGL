@@ -1,0 +1,62 @@
+<html>
+
+<head>
+    <meta charset="UTF-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Floppa sphere</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <canvas id="canvas" style="border: none;" width="1200" height="1000"></canvas>
+    <script type="text/javascript" src="glMatrix-0.9.5.min.js"></script>  
+    <script src="script.js"></script>
+
+
+    <label class="checkbox">
+        <input type="checkbox" id="lighting"/>
+        <div class="checkbox__text">включить/выключить свет</div>
+    </label>
+
+
+    <h2>Двигать камеру стрелками, смотреть вверх/вниз кнопками PGUP и PGDN</h2>
+    <h2>Управление сферой мышкой</h2>
+
+
+    <h2>Cвет:</h2>
+    <b>Направление</b>
+    <div class="text-field">
+        <label class="text-field__label"></label>
+        <input class="text-field__input" type="text" name="X" placeholder="X" id="lightDirectionX" value="-5" />
+    </div>
+
+    <div class="text-field">
+        <label class="text-field__label"></label>
+        <input class="text-field__input" type="text" name="Y" placeholder="Y" id="lightDirectionY" value="-5" />
+    </div>
+
+    <div class="text-field">
+        <label class="text-field__label"></label>
+        <input class="text-field__input" type="text" name="Z" placeholder="Z" id="lightDirectionZ" value="-5" />
+    </div>
+
+
+    <b>Цвет</b>
+    <div class="text-field">
+        <label class="text-field__label"></label>
+        <input class="text-field__input" type="text" name="R" placeholder="R" id="directionalR" value="0.5" />
+    </div>
+
+    <div class="text-field">
+        <label class="text-field__label"></label>
+        <input class="text-field__input" type="text" name="G" placeholder="G" id="directionalG" value="0.5" />
+    </div>
+
+    <div class="text-field">
+        <label class="text-field__label"></label>
+        <input class="text-field__input" type="text" name="B" placeholder="B" id="directionalB" value="0.5" />
+    </div>
+</body>
+
+</html>
