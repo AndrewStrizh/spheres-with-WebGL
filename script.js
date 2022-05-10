@@ -131,7 +131,7 @@ function initShaders() {
 }
 
 
-function LoadedTexture(texture) {
+function handleLoadedTexture(texture) {
     //текстуры, необходимо перевернуть по вертикали из-за разности в системах координат,
     //в PNG-формате значения координат увеличиваются при движении вниз по вертикальной оси
     gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true); 
@@ -162,7 +162,7 @@ function initTexture() {
     sphereTexture = gl.createTexture(); //создание ссылки на текстуру
     sphereTexture.image = new Image(); // создаем объект Image в JavaScript и помещаем его в новый атрибут объекта текстуры
     sphereTexture.image.onload = function () { //загружаем изображение
-        LoadedTexture(sphereTexture)
+        handleLoadedTexture(sphereTexture)
     }
     sphereTexture.image.src = "floppa.png";
 }
@@ -173,11 +173,11 @@ function initTexture2() {
     sphereTexture2 = gl.createTexture();
     sphereTexture2.image = new Image();
     sphereTexture2.image.onload = function () {
-        LoadedTexture(sphereTexture2)
+        handleLoadedTexture(sphereTexture2)
     }
+
     sphereTexture2.image.src = "sphere1.png";
 }
-
 
 const mvMatrix = mat4.create();
 let mvMatrixStack = [];
