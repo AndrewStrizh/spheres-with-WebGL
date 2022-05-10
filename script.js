@@ -161,6 +161,7 @@ let sphereTexture;
 function initTexture() {
     sphereTexture = gl.createTexture(); //создание ссылки на текстуру
     sphereTexture.image = new Image(); // создаем объект Image в JavaScript и помещаем его в новый атрибут объекта текстуры
+    sphereTexture.image.crossOrigin = "anonymous";
     sphereTexture.image.onload = function () { //загружаем изображение
         handleLoadedTexture(sphereTexture)
     }
@@ -172,6 +173,7 @@ let sphereTexture2;
 function initTexture2() {
     sphereTexture2 = gl.createTexture();
     sphereTexture2.image = new Image();
+    sphereTexture2.image.crossOrigin = "anonymous";
     sphereTexture2.image.onload = function () {
         handleLoadedTexture(sphereTexture2)
     }
