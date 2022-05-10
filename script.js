@@ -526,30 +526,30 @@ let zPos = 0;
 let speed = 0;
 
 function Keys() {
-    if (PressedKeys[33]) {
+    if (PressedKeys[69]) {
         // Вверх
         tangRate = 0.1;
-    } else if (PressedKeys[34]) {
+    } else if (PressedKeys[82]) {
         // Вниз
         tangRate = -0.1;
     } else {
         tangRate = 0;
     }
 
-    if (PressedKeys[37] || PressedKeys[65]) {
+    if (PressedKeys[65]) {
         // Влево
         rsRate = 0.1;
-    } else if (PressedKeys[39] || PressedKeys[68]) {
+    } else if (PressedKeys[68]) {
         // Вправо
         rsRate = -0.1;
     } else {
         rsRate = 0;
     }
 
-    if (PressedKeys[38] || PressedKeys[87]) {
+    if (PressedKeys[87]) {
         // Вперед
         speed = 0.005;
-    } else if (PressedKeys[40] || PressedKeys[83]) {
+    } else if (PressedKeys[83]) {
         // Назад
         speed = -0.005;
     } else {
