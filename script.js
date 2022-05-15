@@ -178,7 +178,7 @@ function initTexture2() {
         handleLoadedTexture(sphereTexture2)
     }
 
-    sphereTexture2.image.src = "sphere1.png";
+    sphereTexture2.image.src = "floppa.png";
 }
 
 const mvMatrix = mat4.create();
@@ -226,11 +226,11 @@ function MouseMove(event) {
     }
     let newX = event.clientX;
     let newY = event.clientY;
-
     let deltaX = newX - lastMouseX
     let newRotationMatrix = mat4.create();
     mat4.identity(newRotationMatrix);
     mat4.rotate(newRotationMatrix, degToRad(deltaX / 10), [0, 1, 0]);
+
 
     let deltaY = newY - lastMouseY;
     if (zPos < -7){
@@ -240,7 +240,6 @@ function MouseMove(event) {
     } else {
         mat4.rotate(newRotationMatrix, degToRad(deltaY / 10), [1, 0, 0]);
     }
-
     mat4.multiply(newRotationMatrix, sphereRotationMatrix, sphereRotationMatrix);
 
     lastMouseX = newX
@@ -260,7 +259,8 @@ let sphereVertexPositionBuffer2;
 let sphereVertexNormalBuffer2;
 let sphereVertexTextureCoordBuffer2;
 let sphereVertexIndexBuffer2;
-
+let indexData = [];
+let indexData2 = [];
 function initBuffers() {
     const latitudeBands = 100;
     const longitudeBands = 100;
@@ -298,7 +298,6 @@ function initBuffers() {
         }
     }
 
-    let indexData = [];
     for (let latNumber=0; latNumber < latitudeBands; latNumber++) {
         for (let longNumber=0; longNumber < longitudeBands; longNumber++) {
             let first = (latNumber * (longitudeBands + 1)) + longNumber;
@@ -318,29 +317,21 @@ function initBuffers() {
     sphereVertexNormalBuffer = gl.createBuffer();
     gl.bindBuffer(gl.ARRAY_BUFFER, sphereVertexNormalBuffer);
     gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(normalData), gl.STATIC_DRAW);
-    sphereVertexNormalBuffer.itemSize = 3;
-    sphereVertexNormalBuffer.numItems = normalData.length / 3;
 
     sphereVertexPositionBuffer = gl.createBuffer();
     gl.bindBuffer(gl.ARRAY_BUFFER, sphereVertexPositionBuffer);
     gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertexPositionData), gl.STATIC_DRAW);
-    sphereVertexPositionBuffer.itemSize = 3;
-    sphereVertexPositionBuffer.numItems = vertexPositionData.length / 3;
 
     sphereVertexIndexBuffer = gl.createBuffer();
     gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, sphereVertexIndexBuffer);
     gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(indexData), gl.STATIC_DRAW);
-    sphereVertexIndexBuffer.itemSize = 1;
-    sphereVertexIndexBuffer.numItems = indexData.length;
 
     sphereVertexTextureCoordBuffer = gl.createBuffer();
     gl.bindBuffer(gl.ARRAY_BUFFER, sphereVertexTextureCoordBuffer);
     gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(textureCoordData), gl.STATIC_DRAW);
-    sphereVertexTextureCoordBuffer.itemSize = 2;
-    sphereVertexTextureCoordBuffer.numItems = textureCoordData.length / 2;
 
 
-    const radius2 = 0.8;
+    const radius2 = 0.5;
     const vertexPositionData2 = [];
     const normalData2 = [];
     const textureCoordData2 = [];
@@ -371,7 +362,6 @@ function initBuffers() {
         }
     }
 
-    let indexData2 = [];
     for (let latNumber=0; latNumber < latitudeBands; latNumber++) {
         for (let longNumber=0; longNumber < longitudeBands; longNumber++) {
             let first = (latNumber * (longitudeBands + 1)) + longNumber;
@@ -389,26 +379,18 @@ function initBuffers() {
     sphereVertexNormalBuffer2 = gl.createBuffer();
     gl.bindBuffer(gl.ARRAY_BUFFER, sphereVertexNormalBuffer2);
     gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(normalData2), gl.STATIC_DRAW);
-    sphereVertexNormalBuffer2.itemSize = 3;
-    sphereVertexNormalBuffer2.numItems = normalData2.length / 3;
 
     sphereVertexPositionBuffer2 = gl.createBuffer();
     gl.bindBuffer(gl.ARRAY_BUFFER, sphereVertexPositionBuffer2);
     gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertexPositionData2), gl.STATIC_DRAW);
-    sphereVertexPositionBuffer2.itemSize = 3;
-    sphereVertexPositionBuffer2.numItems = vertexPositionData2.length / 3;
 
     sphereVertexIndexBuffer2 = gl.createBuffer();
     gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, sphereVertexIndexBuffer2);
     gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(indexData2), gl.STATIC_DRAW);
-    sphereVertexIndexBuffer2.itemSize = 1;
-    sphereVertexIndexBuffer2.numItems = indexData2.length;
 
     sphereVertexTextureCoordBuffer2 = gl.createBuffer();
     gl.bindBuffer(gl.ARRAY_BUFFER, sphereVertexTextureCoordBuffer2);
     gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(textureCoordData2), gl.STATIC_DRAW);
-    sphereVertexTextureCoordBuffer2.itemSize = 2;
-    sphereVertexTextureCoordBuffer2.numItems = textureCoordData2.length / 2;
 }
 
 
@@ -458,7 +440,6 @@ function drawScene(ambientR,ambientG,ambientB) {
     mat4.rotate(mvMatrix, degToRad(-rs), [0, 1, 0]);
     mat4.translate(mvMatrix, [-xPos, -yPos, -zPos]);
     mat4.translate(mvMatrix, [0, 0, -6]);
-    mat4.multiply(mvMatrix, sphereRotationMatrix);
 
 
     gl.activeTexture(gl.TEXTURE0);
@@ -466,39 +447,38 @@ function drawScene(ambientR,ambientG,ambientB) {
     gl.uniform1i(shaderProgram.samplerUniform, 0);
 
     gl.bindBuffer(gl.ARRAY_BUFFER, sphereVertexPositionBuffer2);
-    gl.vertexAttribPointer(shaderProgram.vertexPositionAttribute, sphereVertexPositionBuffer2.itemSize, gl.FLOAT, false, 0, 0);
+    gl.vertexAttribPointer(shaderProgram.vertexPositionAttribute, 3, gl.FLOAT, false, 0, 0);
 
     gl.bindBuffer(gl.ARRAY_BUFFER, sphereVertexNormalBuffer2);
-    gl.vertexAttribPointer(shaderProgram.vertexNormalAttribute, sphereVertexNormalBuffer2.itemSize, gl.FLOAT, false, 0, 0);
+    gl.vertexAttribPointer(shaderProgram.vertexNormalAttribute, 3, gl.FLOAT, false, 0, 0);
 
     gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, sphereVertexIndexBuffer2);
     setMatrixUniforms();
-    gl.drawElements(gl.TRIANGLES, sphereVertexIndexBuffer2.numItems, gl.UNSIGNED_SHORT, 0);
+    gl.drawElements(gl.TRIANGLES, indexData2.length, gl.UNSIGNED_SHORT, 0);
 
     gl.bindBuffer(gl.ARRAY_BUFFER, sphereVertexTextureCoordBuffer2);
-    gl.vertexAttribPointer(shaderProgram.textureCoordAttribute, sphereVertexTextureCoordBuffer2.itemSize, gl.FLOAT, false, 0, 0);
+    gl.vertexAttribPointer(shaderProgram.textureCoordAttribute, 2, gl.FLOAT, false, 0, 0);
 
 
 
-
-    mat4.translate(mvMatrix, [1.3, 0, 0]);
+    mat4.translate(mvMatrix,sphereRotationMatrix);
     mat4.multiply(mvMatrix, sphereRotationMatrix);
     gl.activeTexture(gl.TEXTURE0);
     gl.bindTexture(gl.TEXTURE_2D, sphereTexture);
     gl.uniform1i(shaderProgram.samplerUniform, 0);
 
     gl.bindBuffer(gl.ARRAY_BUFFER, sphereVertexPositionBuffer);
-    gl.vertexAttribPointer(shaderProgram.vertexPositionAttribute, sphereVertexPositionBuffer.itemSize, gl.FLOAT, false, 0, 0);
+    gl.vertexAttribPointer(shaderProgram.vertexPositionAttribute, 3, gl.FLOAT, false, 0, 0);
 
     gl.bindBuffer(gl.ARRAY_BUFFER, sphereVertexNormalBuffer);
-    gl.vertexAttribPointer(shaderProgram.vertexNormalAttribute, sphereVertexNormalBuffer.itemSize, gl.FLOAT, false, 0, 0);
+    gl.vertexAttribPointer(shaderProgram.vertexNormalAttribute, 3, gl.FLOAT, false, 0, 0);
 
     gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, sphereVertexIndexBuffer);
     setMatrixUniforms();
-    gl.drawElements(gl.TRIANGLES, sphereVertexIndexBuffer.numItems, gl.UNSIGNED_SHORT, 0);
+    gl.drawElements(gl.TRIANGLES, indexData.length, gl.UNSIGNED_SHORT, 0);
 
     gl.bindBuffer(gl.ARRAY_BUFFER, sphereVertexTextureCoordBuffer);
-    gl.vertexAttribPointer(shaderProgram.textureCoordAttribute, sphereVertexTextureCoordBuffer.itemSize, gl.FLOAT, false, 0, 0);
+    gl.vertexAttribPointer(shaderProgram.textureCoordAttribute, 2, gl.FLOAT, false, 0, 0);
 }
 
 let PressedKeys = {};
