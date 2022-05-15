@@ -235,13 +235,14 @@ function MouseMove(event) {
     let deltaY = newY - lastMouseY;
     if (zPos < -7){
         mat4.rotate(newRotationMatrix, degToRad(-deltaY / 10), [1, 0, 0]);
-    } else if (zPos < -3.5 && zPos > -8) {
+    } else if (zPos < -3.5 && zPos > -8 && xPos >= 0) {
         mat4.rotate(newRotationMatrix, degToRad(-deltaY / 10), [0, 0, 1]);
+    } else if (zPos < -3.5 && zPos > -8 && xPos <= 0) {
+        mat4.rotate(newRotationMatrix, degToRad(deltaY / 10), [0, 0, 1]);
     } else {
         mat4.rotate(newRotationMatrix, degToRad(deltaY / 10), [1, 0, 0]);
     }
     mat4.multiply(newRotationMatrix, sphereRotationMatrix, sphereRotationMatrix);
-
     lastMouseX = newX
     lastMouseY = newY;
 }
