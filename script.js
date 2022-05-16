@@ -229,7 +229,7 @@ function MouseMove(event) {
     let deltaX = newX - lastMouseX
     let newRotationMatrix = mat4.create();
     mat4.identity(newRotationMatrix);
-    mat4.rotate(newRotationMatrix, degToRad(deltaX / 10), [0, 1, 0]);
+    mat4.rotate(newRotationMatrix, degToRad(deltaX / 5), [0, 1, 0]);
 
 
     let deltaY = newY - lastMouseY;
@@ -458,7 +458,7 @@ function drawScene(ambientR,ambientG,ambientB) {
     gl.drawElements(gl.TRIANGLES, indexData2.length, gl.UNSIGNED_SHORT, 0);
 
     gl.bindBuffer(gl.ARRAY_BUFFER, sphereVertexTextureCoordBuffer2);
-    //gl.vertexAttribPointer(shaderProgram.textureCoordAttribute, 2, gl.FLOAT, false, 0, 0);
+    gl.vertexAttribPointer(shaderProgram.textureCoordAttribute, 2, gl.FLOAT, false, 0, 0);
 
 
 
