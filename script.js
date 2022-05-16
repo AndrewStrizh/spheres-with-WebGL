@@ -458,7 +458,7 @@ function drawScene(ambientR,ambientG,ambientB) {
     gl.drawElements(gl.TRIANGLES, indexData2.length, gl.UNSIGNED_SHORT, 0);
 
     gl.bindBuffer(gl.ARRAY_BUFFER, sphereVertexTextureCoordBuffer2);
-    gl.vertexAttribPointer(shaderProgram.textureCoordAttribute, 2, gl.FLOAT, false, 0, 0);
+    //gl.vertexAttribPointer(shaderProgram.textureCoordAttribute, 2, gl.FLOAT, false, 0, 0);
 
 
 
