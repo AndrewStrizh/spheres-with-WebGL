@@ -245,7 +245,6 @@ function MouseMove(event) {
         mat4.rotate(newRotationMatrix, degToRad(deltaY / 5), [1, 0, 0]);
     }
     mat4.multiply(newRotationMatrix, sphereRotationMatrix, sphereRotationMatrix);
-    console.log(xPos,yPos,zPos)
     lastMouseX = newX
     lastMouseY = newY;
 }
