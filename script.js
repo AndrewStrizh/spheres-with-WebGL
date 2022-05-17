@@ -451,6 +451,9 @@ function drawScene(ambientR,ambientG,ambientB) {
     gl.bindBuffer(gl.ARRAY_BUFFER, sphereVertexPositionBuffer2);
     gl.vertexAttribPointer(shaderProgram.vertexPositionAttribute, 3, gl.FLOAT, false, 0, 0);
 
+    gl.bindBuffer(gl.ARRAY_BUFFER, sphereVertexTextureCoordBuffer2);
+    gl.vertexAttribPointer(shaderProgram.textureCoordAttribute, 2, gl.FLOAT, false, 0, 0);
+
     gl.bindBuffer(gl.ARRAY_BUFFER, sphereVertexNormalBuffer2);
     gl.vertexAttribPointer(shaderProgram.vertexNormalAttribute, 3, gl.FLOAT, false, 0, 0);
 
@@ -458,8 +461,6 @@ function drawScene(ambientR,ambientG,ambientB) {
     setMatrixUniforms();
     gl.drawElements(gl.TRIANGLES, indexData2.length, gl.UNSIGNED_SHORT, 0);
 
-    gl.bindBuffer(gl.ARRAY_BUFFER, sphereVertexTextureCoordBuffer2);
-    gl.vertexAttribPointer(shaderProgram.textureCoordAttribute, 2, gl.FLOAT, false, 0, 0);
 
 
 
@@ -472,15 +473,15 @@ function drawScene(ambientR,ambientG,ambientB) {
     gl.bindBuffer(gl.ARRAY_BUFFER, sphereVertexPositionBuffer);
     gl.vertexAttribPointer(shaderProgram.vertexPositionAttribute, 3, gl.FLOAT, false, 0, 0);
 
+    gl.bindBuffer(gl.ARRAY_BUFFER, sphereVertexTextureCoordBuffer);
+    gl.vertexAttribPointer(shaderProgram.textureCoordAttribute, 2, gl.FLOAT, false, 0, 0);
+
     gl.bindBuffer(gl.ARRAY_BUFFER, sphereVertexNormalBuffer);
     gl.vertexAttribPointer(shaderProgram.vertexNormalAttribute, 3, gl.FLOAT, false, 0, 0);
 
     gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, sphereVertexIndexBuffer);
     setMatrixUniforms();
     gl.drawElements(gl.TRIANGLES, indexData.length, gl.UNSIGNED_SHORT, 0);
-
-    gl.bindBuffer(gl.ARRAY_BUFFER, sphereVertexTextureCoordBuffer);
-    gl.vertexAttribPointer(shaderProgram.textureCoordAttribute, 2, gl.FLOAT, false, 0, 0);
 }
 
 let PressedKeys = {};
