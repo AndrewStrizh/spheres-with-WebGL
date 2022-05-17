@@ -189,6 +189,8 @@ function setMatrixUniforms() {
     gl.uniformMatrix4fv(shaderProgram.pMatrixUniform, false, pMatrix);
     gl.uniformMatrix4fv(shaderProgram.mvMatrixUniform, false, mvMatrix);
     //четыре строки для копирования матрицы нормалей на основании матрицы модель-вид
+    //Правильный путь для получения нормалей, указывающих в нужных направлениях,
+    // — это использовать верхнюю левую часть 3х3 от матрицы модель-вид, затем найти от нее обратную и транспонировать
     const normalMatrix = mat3.create();
     mat4.toInverseMat3(mvMatrix, normalMatrix);
     mat3.transpose(normalMatrix);
@@ -298,7 +300,6 @@ function initBuffers() {
             vertexPositionData.push(radius * z);
         }
     }
-
     for (let latNumber=0; latNumber < latitudeBands; latNumber++) {
         for (let longNumber=0; longNumber < longitudeBands; longNumber++) {
             let first = (latNumber * (longitudeBands + 1)) + longNumber;
