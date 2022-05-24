@@ -78,6 +78,8 @@ void main(void) {
 }
 `;
 
+
+
 function compileShader(source, type) {
     let glType = type;
 
@@ -181,9 +183,17 @@ function initTexture2() {
     sphereTexture2.image.src = "floppa.png";
 }
 
+
+
+
 const mvMatrix = mat4.create();
-let mvMatrixStack = [];
 const pMatrix = mat4.create();
+
+const noRotmvMatrix = mat4.create();
+const noRotpMatrix = mat4.create();
+
+
+
 //копируем матрицу модель-вид и проекционную матрицу в uniform-переменные шейдера
 function setMatrixUniforms() {
     gl.uniformMatrix4fv(shaderProgram.pMatrixUniform, false, pMatrix);
@@ -202,13 +212,14 @@ function degToRad(degrees) {
     return degrees * Math.PI / 180;
 }
 
-
 let mouseDown = false;
 let lastMouseX = null;
 let lastMouseY = null;
-
+let lastT = null;
 let sphereRotationMatrix = mat4.create();
 mat4.identity(sphereRotationMatrix);
+let sphereOrientationMatrix = mat4.create();
+mat4.identity(sphereOrientationMatrix);
 
 
 function MouseDown(event) {
@@ -437,6 +448,12 @@ function drawScene(ambientR,ambientG,ambientB) {
     //мы сначала поворачиваем на -θ градусов вокруг оси X, затем на -ψ градусов вокруг оси Y, а затем перемещаемся в (-x, -y, -z). 
     //После этого матрица находится в режиме, когда все объекты могут использовать мировые координаты,
     //и они автоматически преобразовываются в координаты камеры
+
+    mat4.identity(noRotmvMatrix);
+    mat4.translate(noRotmvMatrix, [-xPos, -yPos, -zPos]);
+    mat4.translate(noRotmvMatrix, [0, 0, -6]);
+
+
     mat4.identity(mvMatrix);
     mat4.rotate(mvMatrix, degToRad(-tang), [1, 0, 0]);
     mat4.rotate(mvMatrix, degToRad(-rs), [0, 1, 0]);
@@ -461,11 +478,29 @@ function drawScene(ambientR,ambientG,ambientB) {
     setMatrixUniforms();
     gl.drawElements(gl.TRIANGLES, indexData2.length, gl.UNSIGNED_SHORT, 0);
 
-
-
-
     mat4.translate(mvMatrix,sphereRotationMatrix);
-    mat4.multiply(mvMatrix, sphereRotationMatrix);
+    mat4.translate(noRotmvMatrix,sphereRotationMatrix);
+    const t = vec3.create();
+    t[0] = noRotmvMatrix[12];
+    t[1] = noRotmvMatrix[13];
+    t[2] = noRotmvMatrix[14];
+    vec3.add(t, [xPos, yPos, zPos]);
+    vec3.add(t, [0, 0, 6]);
+    if (lastT !== null) {
+        const axis = vec3.create();
+        vec3.cross(lastT, t, axis);
+        const angle = vec3.length(axis);
+        if (angle > 0) {
+            vec3.normalize(axis, axis);
+            const r = mat4.create();
+            mat4.identity(r);
+            mat4.rotate(r, 2 * angle, axis);
+            mat4.multiply(r, sphereOrientationMatrix, sphereOrientationMatrix);
+        }
+    }
+    lastT = t;
+    mat4.multiply(mvMatrix, sphereOrientationMatrix, mvMatrix);
+
     gl.activeTexture(gl.TEXTURE0);
     gl.bindTexture(gl.TEXTURE_2D, sphereTexture);
     gl.uniform1i(shaderProgram.samplerUniform, 0);
